@@ -27,8 +27,8 @@ public class FeedsController : ControllerBase
     {
         var response = await _feedsService.GetAllFeedsAsync();
 
-        return (response.Response == null)
-            ? BadRequest(response) 
+        return (response.IsError)
+            ? BadRequest(response)
             : Ok(response);
     }
 
@@ -37,7 +37,7 @@ public class FeedsController : ControllerBase
     {
         var response = await _feedsService.LoadFeedsAsync(model);
 
-        return (response.Response == null)
+        return (response.IsError)
             ? BadRequest(response)
             : Ok(response);
     }
@@ -47,7 +47,7 @@ public class FeedsController : ControllerBase
     {
         var response = await _feedsService.GetFromDateAsync(model);
 
-        return (response.Response == null)
+        return (response.IsError)
             ? BadRequest(response)
             : Ok(response);
     }
@@ -58,8 +58,8 @@ public class FeedsController : ControllerBase
     {
         var response = await _feedsService.SetAsReadAsync(id);
 
-        return (response.Response == null)
-            ? BadRequest(response) 
+        return (response.IsError)
+            ? BadRequest(response)
             : Ok(response);
     }
 
@@ -68,7 +68,7 @@ public class FeedsController : ControllerBase
     {
         var response = await _feedsService.DeleteFeedsAsync();
 
-        return (response.Response == null)
+        return (response.IsError)
             ? BadRequest(response)
             : Ok(response);
     }

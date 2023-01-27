@@ -143,6 +143,15 @@ public class FeedService : IFeedService
                     ErrorMessage = "Error! Not found!"
                 };
 
+            if (feed.Unread is false)
+            {
+                return new BaseResponse<FeedResponse>
+                {
+                    IsError = true,
+                    ErrorMessage = $"You have already read the news!!! Id: {feed.Id}"
+                };
+            }
+
             feed.Unread = false;
 
             await _context.SaveChangesAsync();
