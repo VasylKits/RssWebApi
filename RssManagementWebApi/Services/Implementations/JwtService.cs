@@ -22,9 +22,9 @@ public class JwtService
 
     public async Task<IBaseResponse<string>> Register(UserRegistrationModel userRegistrationModel)
     {
-        var user_exist = await _userManager.FindByEmailAsync(userRegistrationModel.Email);
+        var userExist = await _userManager.FindByEmailAsync(userRegistrationModel.Email);
 
-        if (user_exist != null)
+        if (userExist != null)
         {
             return new BaseResponse<string>
             {
@@ -33,37 +33,36 @@ public class JwtService
             };
         }
 
-        var new_user = new IdentityUser
+        var newUser = new IdentityUser
         {
             Email = userRegistrationModel.Email,
-            UserName = userRegistrationModel.Email
+            UserName = userRegistrationModel.Name
         };
 
-        var is_created = await _userManager.CreateAsync(new_user, userRegistrationModel.Password);
+        var isCreated = await _userManager.CreateAsync(newUser, userRegistrationModel.Password);
 
-        if (is_created.Succeeded)
+        if (!isCreated.Succeeded)
         {
-            var token = GenerateJwtToken(new_user);
 
             return new BaseResponse<string>
             {
-                IsError = false,
-                Response = token
+                IsError = true,
+                ErrorMessage = "Invalid payload"
             };
         }
 
         return new BaseResponse<string>
         {
-            IsError = true,
-            ErrorMessage = "Invalid payload"
+            IsError = false,
+            Response = $"Welcome {newUser.UserName}!"
         };
     }
 
     public async Task<IBaseResponse<string>> Login(UserLoginModel userLoginModel)
     {
-        var existing_user = await _userManager.FindByEmailAsync(userLoginModel.Email);
+        var existingUser = await _userManager.FindByEmailAsync(userLoginModel.Email);
 
-        if (existing_user == null)
+        if (existingUser == null)
         {
             return new BaseResponse<string>
             {
@@ -72,7 +71,7 @@ public class JwtService
             };
         }
 
-        var isCorrect = await _userManager.CheckPasswordAsync(existing_user, userLoginModel.Password);
+        var isCorrect = await _userManager.CheckPasswordAsync(existingUser, userLoginModel.Password);
 
         if (!isCorrect)
         {
@@ -83,7 +82,7 @@ public class JwtService
             };
         }
 
-        var jwtToken = GenerateJwtToken(existing_user);
+        var jwtToken = GenerateJwtToken(existingUser);
 
         return new BaseResponse<string>
         {

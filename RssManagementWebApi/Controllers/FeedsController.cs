@@ -15,7 +15,7 @@ namespace RssManagementWebApi.Controllers;
 [ApiController]
 public class FeedsController : ControllerBase
 {
-    public readonly IFeedService _feedsService;
+    private readonly IFeedService _feedsService;
 
     public FeedsController(IFeedService feedsService)
     {
@@ -24,21 +24,52 @@ public class FeedsController : ControllerBase
 
     [HttpGet]
     public async Task<IActionResult> GetAllFeedsAsync()
-        => Ok(await _feedsService.GetAllFeedsAsync());
+    {
+        var response = await _feedsService.GetAllFeedsAsync();
+
+        return (response.Response == null)
+            ? BadRequest(response) 
+            : Ok(response);
+    }
 
     [HttpPost]
     public async Task<ActionResult> LoadFeedsAsync([FromBody] LoadModel model)
-        => Ok(await _feedsService.LoadFeedsAsync(model));
+    {
+        var response = await _feedsService.LoadFeedsAsync(model);
+
+        return (response.Response == null)
+            ? BadRequest(response)
+            : Ok(response);
+    }
 
     [HttpGet("UnreadNews")]
     public async Task<IActionResult> GetFromDateAsync([FromQuery] SearchModel model)
-        => Ok(await _feedsService.GetFromDateAsync(model));
+    {
+        var response = await _feedsService.GetFromDateAsync(model);
+
+        return (response.Response == null)
+            ? BadRequest(response)
+            : Ok(response);
+    }
 
     [HttpPut("SetAsRead")]
     public async Task<IActionResult> SetAsReadAsync([FromQuery] string id)
-    => Ok(await _feedsService.SetAsReadAsync(id));
+
+    {
+        var response = await _feedsService.SetAsReadAsync(id);
+
+        return (response.Response == null)
+            ? BadRequest(response) 
+            : Ok(response);
+    }
 
     [HttpDelete]
     public async Task<IActionResult> DeleteFeedsAsync()
-    => Ok(await _feedsService.DeleteFeedsAsync());
+    {
+        var response = await _feedsService.DeleteFeedsAsync();
+
+        return (response.Response == null)
+            ? BadRequest(response)
+            : Ok(response);
+    }
 }

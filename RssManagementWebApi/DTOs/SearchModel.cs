@@ -5,5 +5,5 @@ namespace RssManagementWebApi.DTOs;
 public class SearchModel
 {
     [Required]
-    public DateTime Data { get; set; }
+    public DateTime Date { get; set; }
 }

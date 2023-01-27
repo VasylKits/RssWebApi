@@ -102,8 +102,8 @@ public class FeedService : IFeedService
                 Description = x.Description,
                 CreatedDate = x.CreatedDate,
                 Unread = x.Unread
-            }).Where(x => (x.CreatedDate != null) && (x.CreatedDate).Value.Year == model.Data.Year
-            && (x.CreatedDate).Value.Month == model.Data.Month && (x.CreatedDate).Value.Day == model.Data.Day && x.Unread == true)
+            }).Where(x => (x.CreatedDate != null) && (x.CreatedDate).Value.Year == model.Date.Year
+            && (x.CreatedDate).Value.Month == model.Date.Month && (x.CreatedDate).Value.Day == model.Date.Day && x.Unread == true)
             .ToListAsync();
 
             if (responseList.Count == 0)

@@ -17,10 +17,22 @@ public class AuthenticationController : ControllerBase
 
     [HttpPost("Register")]
     public async Task<IActionResult> Register([FromBody] UserRegistrationModel userRegistrationModel)
-        => Ok(await _userService.Register(userRegistrationModel));
+    {
+        var response = await _userService.Register(userRegistrationModel);    
+
+        return (response.Response == null)
+            ? BadRequest(response)
+            : Ok(response);
+    }
 
     [Route("Login")]
     [HttpPost]
     public async Task<IActionResult> Login([FromBody] UserLoginModel userLoginModel)
-        => Ok(await _userService.Login(userLoginModel));
+    {
+        var response = await _userService.Login(userLoginModel);
+
+        return (response.Response == null)
+            ? BadRequest(response)
+            : Ok(response);
+    }
 }
