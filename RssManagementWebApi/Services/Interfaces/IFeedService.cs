@@ -2,7 +2,7 @@
 
 namespace RssManagementWebApi.Services.Interfaces;
 
-public interface IFeedsService
+public interface IFeedService
 {
     Task<IBaseResponse<List<FeedResponse>>> GetAllFeedsAsync();
     Task<IBaseResponse<string>> LoadFeedsAsync(LoadModel model);

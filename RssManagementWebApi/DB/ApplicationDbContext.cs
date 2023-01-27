@@ -1,21 +1,26 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using RssManagementWebApi.Models;
 
 namespace RssManagementWebApi.DB;
 
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext : IdentityDbContext<IdentityUser>
 {
     public DbSet<Feed> Feeds { get; set; } = null!;
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlite("Data Source = feedsapp.db");
-    }
+    public ApplicationDbContext(DbContextOptions options)
+    : base(options)
+    { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Feed>().Property(f => f.Id)
-        .ValueGeneratedOnAdd();
-        modelBuilder.Entity<Feed>().Property(f => f.Unread).HasDefaultValue(true);
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Feed>(entity =>
+        {
+            entity.Property(f => f.Id).ValueGeneratedOnAdd();
+            entity.Property(f => f.Unread).HasDefaultValue(true);
+        });
     }
 }

@@ -1,18 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Net;
+using System.Xml.Linq;
+using Microsoft.EntityFrameworkCore;
 using RssManagementWebApi.DB;
 using RssManagementWebApi.DTOs;
 using RssManagementWebApi.Models;
 using RssManagementWebApi.Services.Interfaces;
-using System.Net;
-using System.Xml.Linq;
 
 namespace RssManagementWebApi.Services.Implementations;
 
-public class FeedsService : IFeedsService
+public class FeedService : IFeedService
 {
     public readonly ApplicationDbContext _context;
 
-    public FeedsService(ApplicationDbContext context)
+    public FeedService(ApplicationDbContext context)
     {
         _context = context;
     }
