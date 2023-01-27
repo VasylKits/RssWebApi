@@ -18,9 +18,9 @@ public class AuthenticationController : ControllerBase
     [HttpPost("Register")]
     public async Task<IActionResult> Register([FromBody] UserRegistrationModel userRegistrationModel)
     {
-        var response = await _userService.Register(userRegistrationModel);    
+        var response = await _userService.Register(userRegistrationModel);
 
-        return (response.Response == null)
+        return (response.IsError)
             ? BadRequest(response)
             : Ok(response);
     }
@@ -31,7 +31,7 @@ public class AuthenticationController : ControllerBase
     {
         var response = await _userService.Login(userLoginModel);
 
-        return (response.Response == null)
+        return (response.IsError)
             ? BadRequest(response)
             : Ok(response);
     }
